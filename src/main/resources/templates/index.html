@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css"/>
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="/webjars/font-awesome/6.1.1/css/fontawesome.min.css" />
+
+    <!-- index styles -->
+    <link rel="stylesheet" href="/index.css" />
+</head>
+<body>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <h1>Basic SpringBoot Set-up</h1>
+            <h2>General</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>ID</th>
+                    <th>Movie</th>
+                    <th>Year of release</th>
+                    <th>Chronological order in the MCU</th>
+                </tr>
+                <tr th:each="mcuMovie : ${ mcuMovies }">
+                    <td class="align-middle" th:text="${ mcuMovie.id }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.name }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.releaseYear }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.chronologicalOrder }"></td>
+                </tr>
+                <tr th:if="${ mcuMovies.isEmpty() }">
+                    <td class="text-center" colspan="4">No Marvel Studio Films found!</td>
+                </tr>
+            </table>
+
+            <h2>By release year</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>ID</th>
+                    <th>Movie</th>
+                    <th>Year of release</th>
+                    <th>Chronological order in the MCU</th>
+                </tr>
+                <tr th:each="mcuMovie : ${ mcuMoviesByReleaseYear }">
+                    <td class="align-middle" th:text="${ mcuMovie.id }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.name }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.releaseYear }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.chronologicalOrder }"></td>
+                </tr>
+                <tr th:if="${ mcuMoviesByReleaseYear.isEmpty() }">
+                    <td class="text-center" colspan="4">No Marvel Studio Films found!</td>
+                </tr>
+            </table>
+
+            <h2>By chronological order</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>ID</th>
+                    <th>Movie</th>
+                    <th>Year of release</th>
+                    <th>Chronological order in the MCU</th>
+                </tr>
+                <tr th:each="mcuMovie : ${ mcuMoviesByChronologicalOrder }">
+                    <td class="align-middle" th:text="${ mcuMovie.id }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.name }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.releaseYear }"></td>
+                    <td class="align-middle" th:text="${ mcuMovie.chronologicalOrder }"></td>
+                </tr>
+                <tr th:if="${ mcuMoviesByChronologicalOrder.isEmpty() }">
+                    <td class="text-center" colspan="4">No Marvel Studio Films found!</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

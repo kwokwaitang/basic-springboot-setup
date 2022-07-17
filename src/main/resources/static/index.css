@@ -1,0 +1,12 @@
+.error-field {
+    border-color: red;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+button[type='submit'] {
+    margin-top: 1em;
+}
