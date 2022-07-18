@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,8 +19,8 @@ public class McuMovieServiceImpl implements McuMovieService {
     private final McuMovieRepository mcuMovieRepository;
 
     public McuMovieServiceImpl(ModelMapper modelMapper, McuMovieRepository mcuMovieRepository) {
-        this.modelMapper = modelMapper;
-        this.mcuMovieRepository = mcuMovieRepository;
+        this.modelMapper = Objects.requireNonNull(modelMapper, () -> "Model mapper is unavailable");
+        this.mcuMovieRepository = Objects.requireNonNull(mcuMovieRepository, () -> "No access to MCU Movie database");
     }
 
     @Override
