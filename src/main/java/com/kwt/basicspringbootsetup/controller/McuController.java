@@ -12,11 +12,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Controller
-public class HomeController {
+public class McuController {
 
     private final McuMovieService mcuMovieService;
 
-    public HomeController(McuMovieService mcuMovieService) {
+    public McuController(McuMovieService mcuMovieService) {
         this.mcuMovieService = Objects.requireNonNull(mcuMovieService, () -> "MCU movie service is unavailable");
     }
 

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-class HomeControllerTest {
+class McuControllerTest {
 
     @Mock
     McuMovieService mcuMovieService;
@@ -34,7 +34,7 @@ class HomeControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        final HomeController controllerUnderTest = new HomeController(mcuMovieService);
+        final McuController controllerUnderTest = new McuController(mcuMovieService);
         mvc = standaloneSetup(controllerUnderTest).build();
     }
 
