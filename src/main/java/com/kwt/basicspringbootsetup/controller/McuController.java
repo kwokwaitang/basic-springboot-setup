@@ -34,6 +34,8 @@ public class McuController {
 
         // Non-functional (or traditional) style...
         Optional<List<MarvelStudioFilmDto>> mcuMoviesByChronologicalOrder = mcuMovieService.getMcuMoviesByChronologicalOrder();
+
+        //noinspection OptionalIsPresent
         if (mcuMoviesByChronologicalOrder.isPresent()) {
             model.addAttribute("mcuMoviesByChronologicalOrder", mcuMoviesByChronologicalOrder.get());
         }
