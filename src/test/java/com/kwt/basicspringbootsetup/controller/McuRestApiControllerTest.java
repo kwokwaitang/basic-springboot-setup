@@ -81,11 +81,79 @@ class McuRestApiControllerTest {
 
     @Test
     void getMcuMoviesByReleaseYear() throws Exception {
-        throw new RuntimeException("To be implemented");
+        MarvelStudioFilmDto ironMan = new MarvelStudioFilmDto(3L, "Iron Man", 2008, 3);
+        MarvelStudioFilmDto incredibleHulk = new MarvelStudioFilmDto(5L, "The Incredible Hulk", 2008, 5);
+        MarvelStudioFilmDto ironMan2 = new MarvelStudioFilmDto(4L, "Iron Man 2", 2010, 4);
+        List<MarvelStudioFilmDto> mcuMovies = Arrays.asList(ironMan, incredibleHulk, ironMan2);
+
+        Optional<List<MarvelStudioFilmDto>> optionalListOfMcuMovies =  Optional.of(mcuMovies);
+
+        when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(optionalListOfMcuMovies);
+
+        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].name", is(ironMan.getName())))
+                .andExpect(jsonPath("$[0].releaseYear", is(ironMan.getReleaseYear())))
+                .andExpect(jsonPath("$[1].name", is(incredibleHulk.getName())))
+                .andExpect(jsonPath("$[1].chronologicalOrder", is(incredibleHulk.getChronologicalOrder())))
+                .andExpect(jsonPath("$[2].name", is(ironMan2.getName())))
+                .andExpect(jsonPath("$[2].releaseYear", is(ironMan2.getReleaseYear())))
+                .andExpect(jsonPath("$[2].chronologicalOrder", is(ironMan2.getChronologicalOrder())));
+
+        // Making sure the "when" has been called once only
+        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYear();
+    }
+
+    @Test
+    @DisplayName("When there are no MCU movies by release year available")
+    void getMcuMoviesByReleaseYear_withNoContent() throws Exception {
+        when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(Optional.empty());
+
+        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$", hasSize(0)));
+
+        // Making sure the "when" has been called once only
+        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYear();
     }
 
     @Test
     void getMcuMoviesByChronologicalOrder() throws Exception {
-        throw new RuntimeException("To be implemented");
+        MarvelStudioFilmDto capAmericaFirstAvenger = new MarvelStudioFilmDto(1L, "Captain America : The First Avenger", 2011, 1);
+        MarvelStudioFilmDto capMarvel = new MarvelStudioFilmDto(2L, "Captain Marvel", 2019, 2);
+        MarvelStudioFilmDto ironMan = new MarvelStudioFilmDto(3L, "Iron Man", 2008, 3);
+        List<MarvelStudioFilmDto> mcuMovies = Arrays.asList(capAmericaFirstAvenger, capMarvel, ironMan);
+
+        Optional<List<MarvelStudioFilmDto>> optionalListOfMcuMovies =  Optional.of(mcuMovies);
+
+        when(mcuMovieService.getMcuMoviesByChronologicalOrder()).thenReturn(optionalListOfMcuMovies);
+
+        mvc.perform(get("/mcu-movies-by-chronological-order").contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].name", is(capAmericaFirstAvenger.getName())))
+                .andExpect(jsonPath("$[0].releaseYear", is(capAmericaFirstAvenger.getReleaseYear())))
+                .andExpect(jsonPath("$[1].name", is(capMarvel.getName())))
+                .andExpect(jsonPath("$[1].chronologicalOrder", is(capMarvel.getChronologicalOrder())))
+                .andExpect(jsonPath("$[2].name", is(ironMan.getName())))
+                .andExpect(jsonPath("$[2].releaseYear", is(ironMan.getReleaseYear())))
+                .andExpect(jsonPath("$[2].chronologicalOrder", is(ironMan.getChronologicalOrder())));
+
+        // Making sure the "when" has been called once only
+        verify(mcuMovieService, times(1)).getMcuMoviesByChronologicalOrder();
+    }
+
+    @Test
+    @DisplayName("When there are no MCU movies by chronological order available")
+    void getMcuMoviesByChronologicalOrder_withNoContent() throws Exception {
+        when(mcuMovieService.getMcuMoviesByChronologicalOrder()).thenReturn(Optional.empty());
+
+        mvc.perform(get("/mcu-movies-by-chronological-order").contentType(APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$", hasSize(0)));
+
+        // Making sure the "when" has been called once only
+        verify(mcuMovieService, times(1)).getMcuMoviesByChronologicalOrder();
     }
 }
