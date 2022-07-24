@@ -3,6 +3,7 @@ package com.kwt.basicspringbootsetup.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kwt.basicspringbootsetup.dto.MarvelStudioFilmDto;
 import com.kwt.basicspringbootsetup.service.McuMovieService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +52,19 @@ class McuRestApiControllerTest {
     }
 
     @Test
+    @DisplayName("Testing for an unavailable MCU Movie service")
+    void constructorWithUnavailableMcuMovieService() {
+        Exception exception = Assertions.assertThrows(NullPointerException.class, () -> {
+            new McuRestApiController(null);
+        });
+
+        String expectedMessage = "Missing an MCU movie service";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
     @DisplayName("When there are MCU movies available")
     void getListOfMcuMovies_withContent() throws Exception {
         // Given...
@@ -75,15 +90,16 @@ class McuRestApiControllerTest {
     @Test
     @DisplayName("When there are no MCU movies available")
     void getListOfMcuMovies_withNoContent() throws Exception {
-        when(mcuMovieService.getMcuMovies()).thenReturn(Optional.empty());
+        // Given...
+        given(mcuMovieService.getMcuMovies()).willReturn(Optional.empty());
 
+        // When...
         MockHttpServletResponse response = mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$", hasSize(0)))
                 .andReturn().getResponse();
 
-        // Making sure the "when" has been called once only
-        verify(mcuMovieService, times(1)).getMcuMovies();
+        // Then (assert)...
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        assertThat(response.getContentAsString()).isEqualTo("[]");
     }
 
     @Test
