@@ -1,5 +1,6 @@
 package com.kwt.basicspringbootsetup.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kwt.basicspringbootsetup.dto.MarvelStudioFilmDto;
 import com.kwt.basicspringbootsetup.service.McuMovieService;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,20 +8,29 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -32,8 +42,12 @@ class McuRestApiControllerTest {
     @Mock
     McuMovieService mcuMovieService;
 
+    private JacksonTester<List<MarvelStudioFilmDto>> json;
+
     @BeforeEach
     void setUp() {
+        JacksonTester.initFields(this, new ObjectMapper());
+
         MockitoAnnotations.openMocks(this);
         McuRestApiController controllerUnderTest = new McuRestApiController(mcuMovieService);
         mvc = standaloneSetup(controllerUnderTest).build();
@@ -42,6 +56,7 @@ class McuRestApiControllerTest {
     @Test
     @DisplayName("When there are MCU movies available")
     void getListOfMcuMovies_withContent() throws Exception {
+        // Given...
         MarvelStudioFilmDto ironMan = new MarvelStudioFilmDto(3L, "Iron Man", 2008, 3);
         MarvelStudioFilmDto ironMan2 = new MarvelStudioFilmDto(4L, "Iron Man 2", 2010, 4);
         MarvelStudioFilmDto ironMan3 = new MarvelStudioFilmDto(11L, "Iron Man 3", 2013, 11);
@@ -49,21 +64,16 @@ class McuRestApiControllerTest {
 
         Optional<List<MarvelStudioFilmDto>> optionalListOfMcuMovies =  Optional.of(mcuMovies);
 
-        when(mcuMovieService.getMcuMovies()).thenReturn(optionalListOfMcuMovies);
+        given(mcuMovieService.getMcuMovies()).willReturn(optionalListOfMcuMovies);
 
-        mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].name", is(ironMan.getName())))
-                .andExpect(jsonPath("$[0].releaseYear", is(ironMan.getReleaseYear())))
-                .andExpect(jsonPath("$[1].name", is(ironMan2.getName())))
-                .andExpect(jsonPath("$[1].chronologicalOrder", is(ironMan2.getChronologicalOrder())))
-                .andExpect(jsonPath("$[2].name", is(ironMan3.getName())))
-                .andExpect(jsonPath("$[2].releaseYear", is(ironMan3.getReleaseYear())))
-                .andExpect(jsonPath("$[2].chronologicalOrder", is(ironMan3.getChronologicalOrder())));
+        // When...
+        MockHttpServletResponse response = mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andReturn().getResponse();
 
-        // Making sure the "when" has been called once only
-        verify(mcuMovieService, times(1)).getMcuMovies();
+        // Then (assert)...
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(json.write(optionalListOfMcuMovies.get()).getJson());
     }
 
     @Test
@@ -71,9 +81,10 @@ class McuRestApiControllerTest {
     void getListOfMcuMovies_withNoContent() throws Exception {
         when(mcuMovieService.getMcuMovies()).thenReturn(Optional.empty());
 
-        mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
+        MockHttpServletResponse response = mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$", hasSize(0)))
+                .andReturn().getResponse();
 
         // Making sure the "when" has been called once only
         verify(mcuMovieService, times(1)).getMcuMovies();
