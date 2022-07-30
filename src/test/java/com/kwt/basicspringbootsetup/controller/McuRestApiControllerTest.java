@@ -78,7 +78,7 @@ class McuRestApiControllerTest {
         given(mcuMovieService.getMcuMovies()).willReturn(optionalListOfMcuMovies);
 
         // When...
-        MockHttpServletResponse response = mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
+        MockHttpServletResponse response = mvc.perform(get("/mcu-movies/all").contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andReturn().getResponse();
 
@@ -94,7 +94,7 @@ class McuRestApiControllerTest {
         given(mcuMovieService.getMcuMovies()).willReturn(Optional.empty());
 
         // When...
-        MockHttpServletResponse response = mvc.perform(get("/mcu-movies").contentType(APPLICATION_JSON))
+        MockHttpServletResponse response = mvc.perform(get("/mcu-movies/all").contentType(APPLICATION_JSON))
                 .andReturn().getResponse();
 
         // Then (assert)...
@@ -113,7 +113,7 @@ class McuRestApiControllerTest {
 
         when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(optionalListOfMcuMovies);
 
-        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies/by-release-year").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].name", is(ironMan.getName())))
@@ -133,7 +133,7 @@ class McuRestApiControllerTest {
     void getMcuMoviesByReleaseYear_withNoContent() throws Exception {
         when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(Optional.empty());
 
-        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies/by-release-year").contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$", hasSize(0)));
 
@@ -152,7 +152,7 @@ class McuRestApiControllerTest {
 
         when(mcuMovieService.getMcuMoviesByChronologicalOrder()).thenReturn(optionalListOfMcuMovies);
 
-        mvc.perform(get("/mcu-movies-by-chronological-order").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies/by-chronological-order").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].name", is(capAmericaFirstAvenger.getName())))
@@ -172,7 +172,7 @@ class McuRestApiControllerTest {
     void getMcuMoviesByChronologicalOrder_withNoContent() throws Exception {
         when(mcuMovieService.getMcuMoviesByChronologicalOrder()).thenReturn(Optional.empty());
 
-        mvc.perform(get("/mcu-movies-by-chronological-order").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies/by-chronological-order").contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$", hasSize(0)));
 

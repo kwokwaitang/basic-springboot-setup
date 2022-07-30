@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * http://localhost:8080/swagger-ui/index.html#/mcu-rest-api-controller
  */
 @RestController
+@RequestMapping("/mcu-movies")
 public class McuRestApiController {
 
     private final McuMovieService mcuMovieService;
@@ -27,7 +29,7 @@ public class McuRestApiController {
         this.mcuMovieService = Objects.requireNonNull(mcuMovieService, () -> "Missing an MCU movie service");
     }
 
-    @GetMapping("/mcu-movies")
+    @GetMapping("/all")
     public ResponseEntity<List<MarvelStudioFilmDto>> getListOfMcuMovies() {
         Optional<List<MarvelStudioFilmDto>> mcuMovies = mcuMovieService.getMcuMovies();
 
@@ -39,7 +41,7 @@ public class McuRestApiController {
         return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/mcu-movies-by-release-year")
+    @GetMapping("/by-release-year")
     public ResponseEntity<List<MarvelStudioFilmDto>> getMcuMoviesByReleaseYear() {
         Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYear = mcuMovieService.getMcuMoviesByReleaseYear();
 
@@ -51,7 +53,7 @@ public class McuRestApiController {
         return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/mcu-movies-by-chronological-order")
+    @GetMapping("/by-chronological-order")
     public ResponseEntity<List<MarvelStudioFilmDto>> getMcuMoviesByChronologicalOrder() {
         Optional<List<MarvelStudioFilmDto>> mcuMoviesByChronologicalOrder = mcuMovieService.getMcuMoviesByChronologicalOrder();
 
