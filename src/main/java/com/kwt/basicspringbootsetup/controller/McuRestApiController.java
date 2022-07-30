@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * For the Open API / Swagger page...
+ * http://localhost:8080/swagger-ui/index.html#/mcu-rest-api-controller
+ */
 @RestController
 public class McuRestApiController {
 
