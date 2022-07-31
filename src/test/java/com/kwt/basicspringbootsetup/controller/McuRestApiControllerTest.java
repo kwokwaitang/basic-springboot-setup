@@ -21,6 +21,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -98,8 +100,13 @@ class McuRestApiControllerTest {
                 .andReturn().getResponse();
 
         // Then (assert)...
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
-        assertThat(response.getContentAsString()).isEqualTo("[]");
+//        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+//        assertThat(response.getContentAsString()).isEqualTo("[]");
+        // or...
+        assertAll(
+                () -> assertEquals(response.getStatus(), HttpStatus.NO_CONTENT.value()),
+                () -> assertEquals(response.getContentAsString(), "[]")
+        );
     }
 
     @Test
