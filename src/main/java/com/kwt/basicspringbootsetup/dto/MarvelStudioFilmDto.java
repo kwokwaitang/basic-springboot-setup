@@ -55,6 +55,10 @@ public class MarvelStudioFilmDto {
         this.chronologicalOrder = chronologicalOrder;
     }
 
+    public String getWorseMcuMovieSoFar() {
+        return "Thor : The Dark World";
+    }
+
     @Override
     public String toString() {
         return "MarvelStudioFilmDto{" +

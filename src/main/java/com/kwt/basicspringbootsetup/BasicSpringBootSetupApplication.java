@@ -34,7 +34,7 @@ public class BasicSpringBootSetupApplication {
     }
 
     @Bean
-    public Docket getDocketInstanceEx1() {
+    public Docket getDocket() {
         final Set<String> produces = new HashSet<String>();
         produces.add(MediaType.APPLICATION_JSON_VALUE);
         produces.add(MediaType.APPLICATION_XML_VALUE);

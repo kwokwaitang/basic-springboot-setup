@@ -41,6 +41,9 @@ dependencies {
     // Open API
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+
     /*
      * To stop getting this WARNING use classgraph:4.8.149 and not version 4.8.139 that comes with one of the above dependencies
      *

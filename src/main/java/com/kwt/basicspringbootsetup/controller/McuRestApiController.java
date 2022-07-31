@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * For the Open API / Swagger page...
- * http://localhost:8080/swagger-ui/index.html#/mcu-rest-api-controller
+ * http://localhost:8080/swagger-ui/index.html
  */
 @RestController
 public class McuRestApiController {
