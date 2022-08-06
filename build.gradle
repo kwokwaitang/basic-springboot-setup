@@ -41,6 +41,10 @@ dependencies {
     // Open API
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+    // https://mvnrepository.com/artifact/ma.glasnost.orika/orika-core
+    // https://orika-mapper.github.io/orika-docs/index.html
+    implementation group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.4'
+
     /*
      * To stop getting this WARNING use classgraph:4.8.149 and not version 4.8.139 that comes with one of the above dependencies
      *

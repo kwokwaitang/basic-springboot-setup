@@ -1,7 +1,7 @@
 package com.kwt.basicspringbootsetup;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,14 +23,8 @@ public class BasicSpringBootSetupApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                // To allow ModelMapper to compare private fields in the mapping classes (objects)
-                .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
-
-        return modelMapper;
+    public MapperFactory mapperFactory() {
+        return new DefaultMapperFactory.Builder().build();
     }
 
     @Bean
