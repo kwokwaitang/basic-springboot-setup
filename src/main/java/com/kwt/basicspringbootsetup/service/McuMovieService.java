@@ -11,4 +11,6 @@ public interface McuMovieService {
     Optional<List<MarvelStudioFilmDto>> getMcuMoviesByReleaseYear();
 
     Optional<List<MarvelStudioFilmDto>> getMcuMoviesByChronologicalOrder();
+
+    Boolean createMcuMovie(MarvelStudioFilmDto marvelStudioFilmDto) throws Exception;
 }

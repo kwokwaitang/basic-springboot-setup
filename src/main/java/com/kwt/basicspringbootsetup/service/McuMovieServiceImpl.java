@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+
 @Service
 public class McuMovieServiceImpl implements McuMovieService {
 
@@ -41,6 +43,29 @@ public class McuMovieServiceImpl implements McuMovieService {
     @Override
     public Optional<List<MarvelStudioFilmDto>> getMcuMoviesByChronologicalOrder() {
         return getMcuMoviesBy(mcuMovieRepository.byChronologicalOrder());
+    }
+
+    @Override
+    public Boolean createMcuMovie(MarvelStudioFilmDto marvelStudioFilmDto) throws Exception {
+        if (Objects.isNull(marvelStudioFilmDto)) {
+            throw new Exception("Problem with the received parameters");
+        }
+        if (Objects.isNull(marvelStudioFilmDto.getName()) || marvelStudioFilmDto.getName().isEmpty()) {
+            throw new Exception("Missing a name for the new MCU movie");
+        }
+        if (Objects.isNull(marvelStudioFilmDto.getChronologicalOrder()) || marvelStudioFilmDto.getChronologicalOrder() < 0) {
+            throw new Exception("The chronological order cannot be less than 0");
+        }
+        if (Objects.isNull(marvelStudioFilmDto.getReleaseYear()) || marvelStudioFilmDto.getReleaseYear() < 2008) {
+            throw new Exception("The release year cannot be before 2008");
+        }
+
+        MarvelStudioFilm marvelStudioFilm = new MarvelStudioFilm();
+        copyProperties(marvelStudioFilm, marvelStudioFilmDto);
+
+        mcuMovieRepository.save(marvelStudioFilm);
+
+        return true;
     }
 
     private Optional<List<MarvelStudioFilmDto>> getMcuMoviesBy(Optional<List<MarvelStudioFilm>> mcuMovies) {

@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * For the Open API / Swagger page...
@@ -19,6 +22,8 @@ import java.util.Optional;
  */
 @RestController
 public class McuRestApiController {
+
+    private static final Logger LOGGER = Logger.getGlobal();
 
     private final McuMovieService mcuMovieService;
 
@@ -57,5 +62,16 @@ public class McuRestApiController {
 
         // Using a more functional-style programming...
         return mcuMoviesByChronologicalOrder.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT));
+    }
+
+    @PostMapping("/new-mcu-movie")
+    public ResponseEntity<Boolean> createMcuMovie(@RequestBody MarvelStudioFilmDto marvelStudioFilmDto) {
+        try {
+            return ResponseEntity.ok().body(mcuMovieService.createMcuMovie(marvelStudioFilmDto));
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().body(false);
     }
 }
