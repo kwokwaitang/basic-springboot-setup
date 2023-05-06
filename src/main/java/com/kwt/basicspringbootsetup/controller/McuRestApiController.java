@@ -65,13 +65,15 @@ public class McuRestApiController {
     }
 
     @PostMapping("/new-mcu-movie")
-    public ResponseEntity<Boolean> createMcuMovie(@RequestBody MarvelStudioFilmDto marvelStudioFilmDto) {
+    public ResponseEntity<String> createMcuMovie(@RequestBody MarvelStudioFilmDto marvelStudioFilmDto) {
         try {
-            return ResponseEntity.ok().body(mcuMovieService.createMcuMovie(marvelStudioFilmDto));
+            if (mcuMovieService.createMcuMovie(marvelStudioFilmDto)) {
+                ResponseEntity.status(HttpStatus.CREATED).body("New MCU movie created");
+            }
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }
 
-        return ResponseEntity.badRequest().body(false);
+        return ResponseEntity.badRequest().body("Problem encountered in creating a new MCU movie");
     }
 }
