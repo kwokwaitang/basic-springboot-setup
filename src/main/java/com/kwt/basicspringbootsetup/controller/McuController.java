@@ -29,8 +29,8 @@ public class McuController {
         Optional<List<MarvelStudioFilmDto>> mcuMovies = mcuMovieService.getMcuMovies();
         mcuMovies.ifPresent(marvelStudioFilms -> model.addAttribute("mcuMovies", marvelStudioFilms));
 
-        Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYear = mcuMovieService.getMcuMoviesByReleaseYear();
-        mcuMoviesByReleaseYear.ifPresent(marvelStudioFilms -> model.addAttribute("mcuMoviesByReleaseYear", marvelStudioFilms));
+        Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYearOrder = mcuMovieService.getMcuMoviesByReleaseYearOrder();
+        mcuMoviesByReleaseYearOrder.ifPresent(marvelStudioFilms -> model.addAttribute("mcuMoviesByReleaseYearOrder", marvelStudioFilms));
 
         // Non-functional (or traditional) style...
         Optional<List<MarvelStudioFilmDto>> mcuMoviesByChronologicalOrder = mcuMovieService.getMcuMoviesByChronologicalOrder();

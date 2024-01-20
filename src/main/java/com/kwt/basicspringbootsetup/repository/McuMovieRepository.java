@@ -13,7 +13,10 @@ public interface McuMovieRepository extends CrudRepository<MarvelStudioFilm, Lon
     // Any unique/custom methods to access the data
 
     @Query(nativeQuery = true, value = "SELECT * FROM MCU_MOVIE ORDER BY RELEASE_YEAR, CHRONOLOGICAL_ORDER")
-    Optional<List<MarvelStudioFilm>> byReleaseYear();
+    Optional<List<MarvelStudioFilm>> byReleaseYearOrder();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM MCU_MOVIE WHERE RELEASE_YEAR = ?1 ORDER BY CHRONOLOGICAL_ORDER")
+    Optional<List<MarvelStudioFilm>> byReleaseYear(Integer year);
 
     @Query(nativeQuery = true, value = "SELECT * FROM MCU_MOVIE ORDER BY CHRONOLOGICAL_ORDER")
     Optional<List<MarvelStudioFilm>> byChronologicalOrder();

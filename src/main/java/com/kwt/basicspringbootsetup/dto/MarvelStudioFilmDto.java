@@ -1,9 +1,11 @@
 package com.kwt.basicspringbootsetup.dto;
 
+import java.util.Objects;
+
 /**
  * Data Transfer Object - used to convey the extract data to the front-end
  */
-public class MarvelStudioFilmDto {
+public class MarvelStudioFilmDto implements Comparable<MarvelStudioFilmDto> {
 
     private Long id;
 
@@ -63,5 +65,27 @@ public class MarvelStudioFilmDto {
                 ", releaseYear=" + releaseYear +
                 ", chronologicalOrder=" + chronologicalOrder +
                 '}';
+    }
+
+    @Override
+    public int compareTo(MarvelStudioFilmDto other) {
+        return compare(this.releaseYear, other.releaseYear);
+    }
+
+    public static int compare (int x, int y) {
+        return Integer.compare(x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MarvelStudioFilmDto that = (MarvelStudioFilmDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(releaseYear, that.releaseYear) && Objects.equals(chronologicalOrder, that.chronologicalOrder);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, releaseYear, chronologicalOrder);
     }
 }

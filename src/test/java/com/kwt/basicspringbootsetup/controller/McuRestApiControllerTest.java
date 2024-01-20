@@ -103,7 +103,7 @@ class McuRestApiControllerTest {
     }
 
     @Test
-    void getMcuMoviesByReleaseYear() throws Exception {
+    void getMcuMoviesByReleaseYearOrder() throws Exception {
         MarvelStudioFilmDto ironMan = new MarvelStudioFilmDto(3L, "Iron Man", 2008, 3);
         MarvelStudioFilmDto incredibleHulk = new MarvelStudioFilmDto(5L, "The Incredible Hulk", 2008, 5);
         MarvelStudioFilmDto ironMan2 = new MarvelStudioFilmDto(4L, "Iron Man 2", 2010, 4);
@@ -111,9 +111,9 @@ class McuRestApiControllerTest {
 
         Optional<List<MarvelStudioFilmDto>> optionalListOfMcuMovies =  Optional.of(mcuMovies);
 
-        when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(optionalListOfMcuMovies);
+        when(mcuMovieService.getMcuMoviesByReleaseYearOrder()).thenReturn(optionalListOfMcuMovies);
 
-        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies-by-release-year-order").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].name", is(ironMan.getName())))
@@ -125,20 +125,20 @@ class McuRestApiControllerTest {
                 .andExpect(jsonPath("$[2].chronologicalOrder", is(ironMan2.getChronologicalOrder())));
 
         // Making sure the "when" has been called once only
-        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYear();
+        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYearOrder();
     }
 
     @Test
     @DisplayName("When there are no MCU movies by release year available")
-    void getMcuMoviesByReleaseYear_withNoContent() throws Exception {
-        when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(Optional.empty());
+    void getMcuMoviesByReleaseYearOrder_withNoContent() throws Exception {
+        when(mcuMovieService.getMcuMoviesByReleaseYearOrder()).thenReturn(Optional.empty());
 
-        mvc.perform(get("/mcu-movies-by-release-year").contentType(APPLICATION_JSON))
+        mvc.perform(get("/mcu-movies-by-release-year-order").contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$", hasSize(0)));
 
         // Making sure the "when" has been called once only
-        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYear();
+        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYearOrder();
     }
 
     @Test

@@ -42,16 +42,16 @@ class McuControllerTest {
     @DisplayName("When...")
     void shouldIndex() throws Exception {
         List<MarvelStudioFilmDto> mcuMovies = getMcuMovies();
-        List<MarvelStudioFilmDto> mcuMoviesByReleaseYear = getMcuMoviesByReleaseYear();
+        List<MarvelStudioFilmDto> mcuMoviesByReleaseYearOrder = getMcuMoviesByReleaseYear();
         List<MarvelStudioFilmDto> mcuMoviesByChronologicalOrder = getMcuMoviesByChronologicalOrder();
 
         when(mcuMovieService.getMcuMovies()).thenReturn(Optional.of(mcuMovies));
-        when(mcuMovieService.getMcuMoviesByReleaseYear()).thenReturn(Optional.of(mcuMoviesByReleaseYear));
+        when(mcuMovieService.getMcuMoviesByReleaseYearOrder()).thenReturn(Optional.of(mcuMoviesByReleaseYearOrder));
         when(mcuMovieService.getMcuMoviesByChronologicalOrder()).thenReturn(Optional.of(mcuMoviesByChronologicalOrder));
 
         mvc.perform(get("/"))
                 .andExpect(model().attribute("mcuMovies", iterableWithSize(3)))
-                .andExpect(model().attribute("mcuMoviesByReleaseYear", iterableWithSize(3)))
+                .andExpect(model().attribute("mcuMoviesByReleaseYearOrder", iterableWithSize(3)))
                 .andExpect(model().attribute("mcuMoviesByChronologicalOrder", iterableWithSize(3)))
 
                 // Validate the response code and view
@@ -60,7 +60,7 @@ class McuControllerTest {
                 .andDo(print());
 
         verify(mcuMovieService, times(1)).getMcuMovies();
-        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYear();
+        verify(mcuMovieService, times(1)).getMcuMoviesByReleaseYearOrder();
         verify(mcuMovieService, times(1)).getMcuMoviesByChronologicalOrder();
     }
 

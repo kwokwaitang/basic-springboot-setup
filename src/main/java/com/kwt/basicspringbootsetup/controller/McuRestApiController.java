@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,9 +45,22 @@ public class McuRestApiController {
         return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/mcu-movies-by-release-year")
-    public ResponseEntity<List<MarvelStudioFilmDto>> getMcuMoviesByReleaseYear() {
-        Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYear = mcuMovieService.getMcuMoviesByReleaseYear();
+    @GetMapping("/mcu-movies-by-release-year-order")
+    public ResponseEntity<List<MarvelStudioFilmDto>> getMcuMoviesByReleaseYearOrder() {
+        Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYearOrder = mcuMovieService.getMcuMoviesByReleaseYearOrder();
+
+        // noinspection OptionalIsPresent
+        if (mcuMoviesByReleaseYearOrder.isPresent()) {
+            return ResponseEntity.ok(mcuMoviesByReleaseYearOrder.get());
+        }
+
+        return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/mcu-movies-by-release-year/{year}")
+    public ResponseEntity<List<MarvelStudioFilmDto>> getMcuMoviesByReleaseYear(@PathVariable("year") Integer year) {
+        LOGGER.info(">> YEAR is " + year);
+        Optional<List<MarvelStudioFilmDto>> mcuMoviesByReleaseYear = mcuMovieService.getMcuMoviesByReleaseYear(year);
 
         // noinspection OptionalIsPresent
         if (mcuMoviesByReleaseYear.isPresent()) {

@@ -44,13 +44,13 @@
                     <th>Year of release</th>
                     <th>Chronological order in the MCU</th>
                 </tr>
-                <tr th:each="mcuMovie : ${ mcuMoviesByReleaseYear }">
+                <tr th:each="mcuMovie : ${ mcuMoviesByReleaseYearOrder }">
                     <td class="align-middle" th:text="${ mcuMovie.id }"></td>
                     <td class="align-middle" th:text="${ mcuMovie.name }"></td>
                     <td class="align-middle" th:text="${ mcuMovie.releaseYear }"></td>
                     <td class="align-middle" th:text="${ mcuMovie.chronologicalOrder }"></td>
                 </tr>
-                <tr th:if="${ mcuMoviesByReleaseYear.isEmpty() }">
+                <tr th:if="${ mcuMoviesByReleaseYearOrder.isEmpty() }">
                     <td class="text-center" colspan="4">No Marvel Studio Films found!</td>
                 </tr>
             </table>
