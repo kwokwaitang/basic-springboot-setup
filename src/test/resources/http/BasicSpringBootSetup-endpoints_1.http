@@ -1,0 +1,17 @@
+###
+POST http://localhost:8080/new-mcu-movie
+Content-Type: application/json
+
+{
+  "formData" : {
+    "id" : 30,
+    "name" : "Black Panther : Wakanda Forever",
+    "releaseYear" : 2022,
+    "chronologicalOrder" : 30
+  }
+}
+
+<> 2022-09-08T210700.400.json
+<> 2022-09-08T210233.200.json
+<> 2022-08-29T151103.200.json
+<> 2022-08-29T151021.400.json

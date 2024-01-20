@@ -1,0 +1,53 @@
+###
+GET http://localhost:8080/mcu-movies
+
+<> 2022-07-22T203637.200.json
+
+###
+GET http://localhost:8080/mcu-movies-by-release-year-order
+
+###
+GET http://localhost:8080/mcu-movies-by-release-year/2008
+
+###
+GET http://localhost:8080/mcu-movies-by-chronological-order
+
+<> 2022-07-23T183020.200.json
+<> 2022-07-22T203813.200.json
+
+###
+POST http://localhost:8080/dwell-boundary
+Content-Type: application/json
+
+{
+  "formData" : {
+    "fromValue" : "12",
+    "toValue" : "16",
+    "tolerance" : "88",
+    "cdsid" : "KTANG16"
+  }
+}
+
+<> 2022-08-16T180314.200.json
+<> 2022-08-16T180215.200.json
+<> 2022-08-15T220127.200.json
+
+###
+POST http://localhost:8080/new-mcu-movie
+Content-Type: application/json
+
+{
+  "formData" : {
+    "id" : 30,
+    "name" : "Black Panther : Wakanda Forever",
+    "releaseYear" : 2022,
+    "chronologicalOrder" : 30
+  }
+}
+
+<> 2022-09-08T210700.400.json
+<> 2022-09-08T210233.200.json
+<> 2022-08-29T151103.200.json
+
+<> 2022-08-15T210320.200.json
+<> 2022-08-15T205506.200.json
