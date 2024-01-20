@@ -44,6 +44,17 @@ dependencies {
     // Open API
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+    // Cucumber
+    implementation 'org.codehaus.groovy:groovy:3.0.8'
+    testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-java8
+    testImplementation 'io.cucumber:cucumber-java8:7.11.0'
+
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-spring
+    testImplementation 'io.cucumber:cucumber-spring:6.10.4'
+
     /*
      * To stop getting this WARNING use classgraph:4.8.149 and not version 4.8.139 that comes with one of the above dependencies
      *
@@ -63,4 +74,19 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:target/cucumber-report.html',
+                    '--glue', 'com.kwt',
+                    'src/test/resources']
+        }
+    }
 }
